@@ -1,0 +1,26 @@
+// colors
+$creamsicle: #FFA372;
+$blood-orange: #ed6663;
+$navy-blue: #43658b;
+$periwinkle: #4e89ae;
+$sky-blue: #87CEEB;
+
+// font-sizes
+$huge: 30px;
+$big: 26px;
+$medium: 20px;
+$small: 16px;
+$tiny: 12px;
+
+.app-container {
+  width: 100%;
+  height: 100%;
+  background-color: $sky-blue;
+  font-family: Ubuntu;
+}
+
+.app-header {
+  display: flex;
+  justify-content: center;
+  font-size: $huge;
+}
