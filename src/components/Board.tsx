@@ -11,7 +11,7 @@ export default (props: BoardProps) => {
                         <p className="board-column-header">{StatusesDisplayMap[status]}</p>
                         {
                             props.issues[status].map((issue: Issue, i: number) => {
-                                return <IssueCard issue={issue} updateIssue={props.updateIssue} />
+                                return <IssueCard key={issue.id} issue={issue} updateIssue={props.updateIssue} />
                             })
                         }
                     </div>
