@@ -10,6 +10,12 @@ export enum Statuses {
     Done = "done"
 }
 
+export const StatusesDisplayMap = {
+    [Statuses.Backlog]: "Backlog",
+    [Statuses.InProgress]: "In Progress",
+    [Statuses.Done]: "Done",
+}
+
 export interface Issue {
     id: string,
     message: any,
@@ -19,12 +25,17 @@ export interface Issue {
 }
 
 export interface IssueState {
-    [IssueRanks.Low]: [Issue],
-    [IssueRanks.High]: [Issue],
-    [IssueRanks.Critical]: [Issue],
+    [Statuses.Backlog]: [Issue],
+    [Statuses.InProgress]: [Issue],
+    [Statuses.Done]: [Issue],
 }
 
 export interface BoardProps {
     issues: IssueState,
-    updateIssue: (Issue) => void,
+    updateIssue: (issue: Issue) => void,
+}
+
+export interface IssueCardProps {
+    issue: Issue,
+    updateIssue: (issue: Issue) => void,
 }

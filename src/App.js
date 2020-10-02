@@ -1,31 +1,34 @@
 import React, {useEffect, useState} from 'react';
 import './global.scss'
-import dotenv from 'dotenv';
 import axios from 'axios';
-import {API_URLS} from './config';
-import {IssueRanks} from './types.ts'
+import {AXIOS_CONFIG, API_URLS} from './config';
+import {Statuses} from './types'
+import Board from './components/Board'
 
-dotenv.config();
+
+// need to reset initial state object on each re-render otherwise state updates wont trigger a re-render bc pointing to same object in memory.
+const getInitialState = () => JSON.parse(JSON.stringify({
+  [Statuses.Backlog]: [],
+  [Statuses.InProgress]: [],
+  [Statuses.Done]: [],
+}));
 
 function App() {
-  const initialState = {
-    [IssueRanks.Low]: [],
-    [IssueRanks.High]: [],
-    [IssueRanks.Critical]: [],
-  }
-  const [issues, setIssues] = useState({});
+  const storeIssues = (response) => {
+    const issues = response.data.reduce((state, issue) => {
+      const { status } = issue;
+      state[status].push(issue);
+      return state;
+    }, getInitialState());
+    setIssues(issues);
+  };
+  const [issues, setIssues] = useState(getInitialState());
   useEffect(() => {
-    const token = process.env.REACT_APP_VERIFICATION_TOKEN;
-    axios.get(API_URLS.GET_ISSUES, { headers: { 'slack-verification-token': token } }).then(updateIssues).catch(console.error);
+    axios.get(API_URLS.GET_ISSUES, AXIOS_CONFIG).then(storeIssues).catch(console.error);
   }, []);
   
-  const updateIssues = (response) => {
-    const issues = response.data.reduce((state, issue) => {
-      const { rank } = issue;
-      state[rank].push(issue);
-      return state;
-    }, initialState);
-    setIssues(issues);
+  const updateIssue = (issue) => {
+    axios.post(API_URLS.UPDATE_ISSUE, issue, AXIOS_CONFIG).then(() => console.log('successfully updated issue')).catch(console.error);
   }
   
   return (
@@ -33,7 +36,7 @@ function App() {
       <div className="app-header">
         <p>Care Bear</p>
       </div>
-      
+      <Board issues={issues} updateIssue={updateIssue} />
     </div>
   );
 }
