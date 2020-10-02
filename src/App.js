@@ -1,12 +1,16 @@
 import React, {useEffect} from 'react';
 import logo from './logo.svg';
 import './App.css';
+import dotenv from 'dotenv';
 import axios from 'axios';
-import {API_URL} from './config';
+import {API_URLS} from './config';
+
+dotenv.config();
 
 function App() {
   useEffect(() => {
-    axios.get(API_URL).then(console.log);
+    const token = process.env.REACT_APP_VERIFICATION_TOKEN;
+    axios.get(API_URLS.GET_ISSUES, { headers: { 'slack-verification-token': token } }).then(console.log);
   }, []);
   
   return (
