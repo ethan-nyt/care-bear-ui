@@ -67,5 +67,10 @@ $tiny: 12px;
   flex-direction: column;
   justify-content: space-between;
   margin: 5px;
-  height: 200px;
+  width: 100%;
+  align-self: center;
+}
+
+.issue-card {
+  width: 100% !important;
 }

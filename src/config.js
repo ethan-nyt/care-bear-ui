@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-const ROOT_URL = "https://0d483abd90fc.ngrok.io"
+const ROOT_URL = "http://5535832ff3cd.ngrok.io"
 
 export const API_URLS = {
   GET_ISSUES: `${ROOT_URL}/issues`,

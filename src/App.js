@@ -13,6 +13,14 @@ const getInitialState = () => JSON.parse(JSON.stringify({
   [Statuses.Done]: [],
 }));
 
+/**
+ * TODOS:
+ * 1. drag and drop cards from one column to another
+ * 2. on drop into a different column, update that issue via api call to reflect new status
+ * 3. add a modal component that is opened on click of a card
+ * 4. redesign issue card & implement new design (show priority, issue date, truncated text, maybe the author's username)
+ * 5. design modal contents & implement new design. mvp just display the full text of the issue here.
+ */
 function App() {
   const storeIssues = (response) => {
     const issues = response.data.reduce((state, issue) => {
@@ -31,12 +39,24 @@ function App() {
     axios.post(API_URLS.UPDATE_ISSUE, issue, AXIOS_CONFIG).then(() => console.log('successfully updated issue')).catch(console.error);
   }
   
+  // handlers for drag and drop of a card
+  const dragAndDropHandlers = {
+    // invoked when user clicks and drags an issue card.
+    // we will need access to the card status.
+    onDrag: (status) => {
+      console.log('on drag!', status)
+    },
+    onDrop: () => {
+      console.log('on drop!')
+    }
+  }
+  
   return (
     <div className="app-container">
       <div className="app-header">
         <p>Care Bear</p>
       </div>
-      <Board issues={issues} updateIssue={updateIssue} />
+      <Board issues={issues} updateIssue={updateIssue} dragDropHandlers={dragAndDropHandlers} />
     </div>
   );
 }
