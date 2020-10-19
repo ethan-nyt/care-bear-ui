@@ -31,6 +31,7 @@ function App() {
     setIssues(issues);
   };
   const [issues, setIssues] = useState(getInitialState());
+  const [dropIndex, setDropIndex] = useState(-1)
   useEffect(() => {
     axios.get(API_URLS.GET_ISSUES, AXIOS_CONFIG).then(storeIssues).catch(console.error);
   }, []);
@@ -44,10 +45,20 @@ function App() {
     // invoked when user clicks and drags an issue card.
     // we will need access to the card status.
     onDrag: (status) => {
-      console.log('on drag!', status)
+      // console.log('on drag!', status)
     },
     onDrop: () => {
       console.log('on drop!')
+    },
+    onDragStart: () => {
+      console.log('on drag start')
+    },
+    onDragEnd: () => {
+      console.log('on drag end')
+    },
+    onDragOver: (e, i) => {
+      e.preventDefault();
+      setDropIndex(i);
     }
   }
   
@@ -56,7 +67,7 @@ function App() {
       <div className="app-header">
         <p>Care Bear</p>
       </div>
-      <Board issues={issues} updateIssue={updateIssue} dragDropHandlers={dragAndDropHandlers} />
+      <Board issues={issues} updateIssue={updateIssue} dragDropHandlers={dragAndDropHandlers} dropIndex={dropIndex} />
     </div>
   );
 }

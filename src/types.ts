@@ -33,7 +33,8 @@ export interface IssueState {
 export interface BoardProps {
     issues: IssueState,
     updateIssue: (issue: Issue) => void,
-    dragDropHandlers: { onDrag: () => void, onDrop: () => void },
+    dragDropHandlers: { onDrag: () => void, onDrop: () => void, onDragStart: () => void, onDragEnd: () => void, onDragOver: (e: any, i: Number) => void },
+    dropIndex: Number
 }
 
 export interface IssueCardProps {
@@ -41,4 +42,6 @@ export interface IssueCardProps {
     updateIssue: (issue: Issue) => void,
     onDrag: (status: keyof typeof Statuses) => void,
     onDrop: () => void,
+    onDragStart: () => void,
+    onDragEnd: () => void
 }
