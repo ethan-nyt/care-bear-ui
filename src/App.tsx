@@ -37,8 +37,8 @@ function App() {
     axios.get(API_URLS.GET_ISSUES, AXIOS_CONFIG).then(storeIssues).catch(console.error);
   }, []);
   
-  const updateIssue = (issue: Issue) => {
-    axios.post(API_URLS.UPDATE_ISSUE, issue, AXIOS_CONFIG).then(() => console.log('successfully updated issue')).catch(console.error);
+  const updateIssue = (updatedIssue: Issue) => {
+    axios.post(API_URLS.UPDATE_ISSUE, { updatedIssue }, AXIOS_CONFIG).then(() => console.log('successfully updated issue')).catch(console.error);
   }
   
   // handlers for drag and drop of a card
@@ -51,7 +51,7 @@ function App() {
       console.log('setting new issues:', JSON.parse(JSON.stringify(stateCopy)))
       setIssues(stateCopy);
       // @ts-ignore
-      const update = { ...issue, status: Statuses[destinationColumn]}
+      const update = { ...issue, status: destinationColumn}
       updateIssue(update);
       // reset the drop index to -1 to clear active styling
       setDestinationColumn('');
