@@ -1,16 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import './global.scss'
 import axios from 'axios';
-import {AXIOS_CONFIG, API_URLS} from './config';
+import {API_URLS, AXIOS_CONFIG} from './config';
 import {Issue, Statuses} from './types'
 import Board from './components/Board'
 
 
 // need to reset initial state object on each re-render otherwise state updates wont trigger a re-render bc pointing to same object in memory.
 const getInitialState = () => JSON.parse(JSON.stringify({
-  [Statuses.Backlog]: [],
-  [Statuses.InProgress]: [],
-  [Statuses.Done]: [],
+    [Statuses.Backlog]: [],
+    [Statuses.InProgress]: [],
+    [Statuses.Done]: [],
 }));
 
 /**
@@ -22,59 +22,57 @@ const getInitialState = () => JSON.parse(JSON.stringify({
  * 5. design modal contents & implement new design. mvp just display the full text of the issue here.
  */
 function App() {
-  const storeIssues = (response: any) => {
-    const issues = response.data.reduce((state: any, issue: Issue) => {
-      const { status } = issue;
-      state[status].push(issue);
-      return state;
-    }, getInitialState());
-    setIssues(issues);
-  };
-  const [issues, setIssues] = useState(getInitialState());
-  const [originColumn, setOriginColumn] = useState('')
-  const [destinationColumn, setDestinationColumn] = useState('');
-  useEffect(() => {
-    axios.get(API_URLS.GET_ISSUES, AXIOS_CONFIG).then(storeIssues).catch(console.error);
-  }, []);
-  
-  const updateIssue = (updatedIssue: Issue) => {
-    axios.post(API_URLS.UPDATE_ISSUE, { updatedIssue }, AXIOS_CONFIG).then(() => console.log('successfully updated issue')).catch(console.error);
-  }
-  
-  // handlers for drag and drop of a card
-  const dragAndDropHandlers = {
-    onDragEnd: (i: Number) => {
-      console.log('on drag end');
-      const stateCopy = JSON.parse(JSON.stringify(issues));
-      const [issue] = stateCopy[originColumn].splice(i, 1);
-      stateCopy[destinationColumn].push(issue);
-      console.log('setting new issues:', JSON.parse(JSON.stringify(stateCopy)))
-      setIssues(stateCopy);
-      // @ts-ignore
-      const update = { ...issue, status: destinationColumn}
-      updateIssue(update);
-      // reset the drop index to -1 to clear active styling
-      setDestinationColumn('');
-      setOriginColumn('')
-    },
-    onDragOver: (e: any, status: Statuses) => {
-      e.preventDefault();
-      setDestinationColumn(status);
-    },
-    onDragStart: (status: Statuses) => {
-      console.log('setting origin column:', status);
-      setOriginColumn(status);
+    const storeIssues = (response: any) => {
+        const issues = response.data.reduce((state: any, issue: Issue) => {
+            const {status} = issue;
+            state[status].push(issue);
+            return state;
+        }, getInitialState());
+        setIssues(issues);
+    };
+    const [issues, setIssues] = useState(getInitialState());
+    const [originColumn, setOriginColumn] = useState('')
+    const [destinationColumn, setDestinationColumn] = useState('');
+    useEffect(() => {
+        axios.get(API_URLS.GET_ISSUES, AXIOS_CONFIG).then(storeIssues).catch(console.error);
+    }, []);
+
+    const updateIssue = (updatedIssue: Issue) => {
+        axios.post(API_URLS.UPDATE_ISSUE, {updatedIssue}, AXIOS_CONFIG).then(() => console.log('successfully updated issue')).catch(console.error);
     }
-  }
-  
-  return (
-    <div className="app-container">
-      <div className="app-header">
-        <p>Care Bear</p>
-      </div>
-      <Board issues={issues} updateIssue={updateIssue} dragDropHandlers={dragAndDropHandlers} destinationColumn={destinationColumn} />
-    </div>
-  );
+
+    // handlers for drag and drop of a card
+    const dragAndDropHandlers = {
+        onDragEnd: (i: Number) => {
+            const stateCopy = JSON.parse(JSON.stringify(issues));
+            const [issue] = stateCopy[originColumn].splice(i, 1);
+            stateCopy[destinationColumn].push(issue);
+            setIssues(stateCopy);
+            // @ts-ignore
+            const update = {...issue, status: destinationColumn}
+            updateIssue(update);
+            // reset the drop index to -1 to clear active styling
+            setDestinationColumn('');
+            setOriginColumn('')
+        },
+        onDragOver: (e: any, status: Statuses) => {
+            e.preventDefault();
+            setDestinationColumn(status);
+        },
+        onDragStart: (status: Statuses) => {
+            setOriginColumn(status);
+        }
+    }
+
+    return (
+        <div className="app-container">
+            <div className="app-header">
+                <p>Care Bear</p>
+            </div>
+            <Board issues={issues} updateIssue={updateIssue} dragDropHandlers={dragAndDropHandlers}
+                   destinationColumn={destinationColumn}/>
+        </div>
+    );
 }
 
 export default App;
