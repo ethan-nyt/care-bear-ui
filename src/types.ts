@@ -21,7 +21,7 @@ export interface Issue {
     message: any,
     rank: keyof typeof IssueRanks,
     reportingUser: any,
-    status: keyof typeof Statuses
+    status: Statuses
 }
 
 export interface IssueState {
@@ -33,15 +33,13 @@ export interface IssueState {
 export interface BoardProps {
     issues: IssueState,
     updateIssue: (issue: Issue) => void,
-    dragDropHandlers: { onDrag: () => void, onDrop: () => void, onDragStart: () => void, onDragEnd: () => void, onDragOver: (e: any, i: Number) => void },
-    dropIndex: Number
+    dragDropHandlers: { onDragEnd: (i: Number) => void, onDragOver: (e: any, status: Statuses) => void, onDragStart: (status: Statuses) => void },
+    destinationColumn: string
 }
 
 export interface IssueCardProps {
     issue: Issue,
     updateIssue: (issue: Issue) => void,
-    onDrag: (status: keyof typeof Statuses) => void,
-    onDrop: () => void,
-    onDragStart: () => void,
-    onDragEnd: () => void
+    onDragEnd: () => void,
+    onDragStart: (status: Statuses) => void,
 }

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import './global.scss'
 import axios from 'axios';
 import {AXIOS_CONFIG, API_URLS} from './config';
-import {Statuses} from './types'
+import {Issue, Statuses} from './types'
 import Board from './components/Board'
 
 
@@ -22,8 +22,8 @@ const getInitialState = () => JSON.parse(JSON.stringify({
  * 5. design modal contents & implement new design. mvp just display the full text of the issue here.
  */
 function App() {
-  const storeIssues = (response) => {
-    const issues = response.data.reduce((state, issue) => {
+  const storeIssues = (response: any) => {
+    const issues = response.data.reduce((state: any, issue: Issue) => {
       const { status } = issue;
       state[status].push(issue);
       return state;
@@ -31,34 +31,39 @@ function App() {
     setIssues(issues);
   };
   const [issues, setIssues] = useState(getInitialState());
-  const [dropIndex, setDropIndex] = useState(-1)
+  const [originColumn, setOriginColumn] = useState('')
+  const [destinationColumn, setDestinationColumn] = useState('');
   useEffect(() => {
     axios.get(API_URLS.GET_ISSUES, AXIOS_CONFIG).then(storeIssues).catch(console.error);
   }, []);
   
-  const updateIssue = (issue) => {
+  const updateIssue = (issue: Issue) => {
     axios.post(API_URLS.UPDATE_ISSUE, issue, AXIOS_CONFIG).then(() => console.log('successfully updated issue')).catch(console.error);
   }
   
   // handlers for drag and drop of a card
   const dragAndDropHandlers = {
-    // invoked when user clicks and drags an issue card.
-    // we will need access to the card status.
-    onDrag: (status) => {
-      // console.log('on drag!', status)
+    onDragEnd: (i: Number) => {
+      console.log('on drag end', i);
+      const stateCopy = JSON.parse(JSON.stringify(issues));
+      const [issue] = stateCopy[originColumn].splice(i, 1);
+      stateCopy[destinationColumn].push(issue);
+      setIssues(stateCopy);
+      // @ts-ignore
+      const update = { ...issue, status: Statuses[destinationColumn]}
+      updateIssue(update);
+      // splice the card from its current column array
+      // push the card into the destination column array
+      // update the issue status to match the new column array
+      // reset the drop index to -1 to clear active styling
+      setDestinationColumn('')
     },
-    onDrop: () => {
-      console.log('on drop!')
-    },
-    onDragStart: () => {
-      console.log('on drag start')
-    },
-    onDragEnd: () => {
-      console.log('on drag end')
-    },
-    onDragOver: (e, i) => {
+    onDragOver: (e: any, status: Statuses) => {
       e.preventDefault();
-      setDropIndex(i);
+      setDestinationColumn(status);
+    },
+    onDragStart: (status: Statuses) => {
+      setOriginColumn(status);
     }
   }
   
@@ -67,7 +72,7 @@ function App() {
       <div className="app-header">
         <p>Care Bear</p>
       </div>
-      <Board issues={issues} updateIssue={updateIssue} dragDropHandlers={dragAndDropHandlers} dropIndex={dropIndex} />
+      <Board issues={issues} updateIssue={updateIssue} dragDropHandlers={dragAndDropHandlers} destinationColumn={destinationColumn} />
     </div>
   );
 }

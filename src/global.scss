@@ -40,11 +40,15 @@ $tiny: 12px;
   border: 1px solid white;
   width: 30%;
   height: 99%;
+  /* opacity: 10%; */
   overflow-y: scroll;
+  /* background-color: white; */
+  background: rgba(255,255,255, 0.2);
 }
 
 .active {
-  background-color: white;
+  background-color: $baby-blue;
+  opacity: 0.5;
 }
 
 .board-column-header {

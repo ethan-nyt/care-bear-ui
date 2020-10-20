@@ -4,7 +4,7 @@ import {Card, Icon} from 'semantic-ui-react';
 
 export default (props: IssueCardProps) => {
     return (
-        <div className="issue-card-container" draggable onDragOver={e => e.preventDefault()} onDrop={props.onDrop} onDrag={() => props.onDrag(props.issue.status)} onDragStart={props.onDragStart} onDragEnd={props.onDragEnd}>
+        <div className="issue-card-container" draggable onDragStart={() => props.onDragStart(props.issue.status)} onDragEnd={props.onDragEnd}>
             <Card className="issue-card">
                 <Card.Header><Icon name="exclamation circle" /></Card.Header>
                 <Card.Content>
