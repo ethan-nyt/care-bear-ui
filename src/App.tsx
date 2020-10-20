@@ -44,25 +44,25 @@ function App() {
   // handlers for drag and drop of a card
   const dragAndDropHandlers = {
     onDragEnd: (i: Number) => {
-      console.log('on drag end', i);
+      console.log('on drag end');
       const stateCopy = JSON.parse(JSON.stringify(issues));
       const [issue] = stateCopy[originColumn].splice(i, 1);
       stateCopy[destinationColumn].push(issue);
+      console.log('setting new issues:', JSON.parse(JSON.stringify(stateCopy)))
       setIssues(stateCopy);
       // @ts-ignore
       const update = { ...issue, status: Statuses[destinationColumn]}
       updateIssue(update);
-      // splice the card from its current column array
-      // push the card into the destination column array
-      // update the issue status to match the new column array
       // reset the drop index to -1 to clear active styling
-      setDestinationColumn('')
+      setDestinationColumn('');
+      setOriginColumn('')
     },
     onDragOver: (e: any, status: Statuses) => {
       e.preventDefault();
       setDestinationColumn(status);
     },
     onDragStart: (status: Statuses) => {
+      console.log('setting origin column:', status);
       setOriginColumn(status);
     }
   }

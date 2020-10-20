@@ -42,4 +42,5 @@ export interface IssueCardProps {
     updateIssue: (issue: Issue) => void,
     onDragEnd: () => void,
     onDragStart: (status: Statuses) => void,
+    status: Statuses
 }

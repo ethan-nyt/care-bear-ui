@@ -13,7 +13,7 @@ export default (props: BoardProps) => {
                         <p className="board-column-header">{StatusesDisplayMap[status]}</p>
                         {
                             props.issues[status].map((issue: Issue, i: number) => {
-                                return <IssueCard key={issue.id} issue={issue} updateIssue={props.updateIssue} onDragStart={onDragStart} onDragEnd={() => onDragEnd(i)} />
+                                return <IssueCard key={issue.id} issue={issue} status={status} updateIssue={props.updateIssue} onDragStart={onDragStart} onDragEnd={() => onDragEnd(i)} />
                             })
                         }
                     </div>
