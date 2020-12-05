@@ -21,7 +21,8 @@ export interface Issue {
     message: any,
     rank: keyof typeof IssueRanks,
     reportingUser: any,
-    status: Statuses
+    status: Statuses,
+    timestamp: string,
 }
 
 export interface IssueState {
@@ -43,4 +44,22 @@ export interface IssueCardProps {
     onDragEnd: () => void,
     onDragStart: (status: Statuses) => void,
     status: Statuses
+}
+
+export interface Channel {
+    id: string,
+    name: string,
+}
+
+// The message object from slack has a lot of other fields, ex. uploaded file objects, blocks for rich text rendering, etc. may be useful in the future
+export interface Message {
+    text: string,
+    type: string,
+    user: string, // the author's ID
+    name: string, // the author's name
+    team_id: string, // the author's team ID
+    username: string, // the author's username
+    channel: Channel,
+    ts: string,
+    [x: string]: any // catch-all for other message properties we dont care about yet.
 }
