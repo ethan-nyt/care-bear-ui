@@ -69,8 +69,12 @@ function App() {
             <div className="app-header">
                 <p>Care Bear</p>
             </div>
-            <Board issues={issues} updateIssue={updateIssue} dragDropHandlers={dragAndDropHandlers}
-                   destinationColumn={destinationColumn}/>
+            <Board
+                issues={issues}
+                updateIssue={updateIssue}
+                dragDropHandlers={dragAndDropHandlers}
+                destinationColumn={destinationColumn}
+            />
         </div>
     );
 }

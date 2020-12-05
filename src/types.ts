@@ -8,13 +8,13 @@ export enum Statuses {
     Backlog = "backlog",
     InProgress = "progress",
     Done = "done"
-}
+};
 
 export const StatusesDisplayMap = {
     [Statuses.Backlog]: "Backlog",
     [Statuses.InProgress]: "In Progress",
     [Statuses.Done]: "Done",
-}
+};
 
 export interface Issue {
     id: string,
