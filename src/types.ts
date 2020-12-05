@@ -18,7 +18,7 @@ export const StatusesDisplayMap = {
 
 export interface Issue {
     id: string,
-    message: any,
+    message: Message,
     rank: keyof typeof IssueRanks,
     reportingUser: any,
     status: Statuses,

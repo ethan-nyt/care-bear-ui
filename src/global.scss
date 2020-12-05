@@ -39,7 +39,7 @@ $tiny: 12px;
   align-items: center;
   border: 1px solid white;
   width: 30%;
-  height: 99%;
+  height: 600px;
   /* opacity: 10%; */
   overflow-y: scroll;
   /* background-color: white; */
@@ -61,17 +61,20 @@ $tiny: 12px;
 .issue-card-container {
   font-size: $medium;
   font-family: Ubuntu;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  margin: 5px;
-  width: 80%;
-  min-height: 100px;
-  overflow: hidden;
+  margin: 10px;
   align-self: center;
   box-shadow: 1px 1px 4px black;
 }
 
 .issue-card {
   width: 100% !important;
+  overflow: hidden;
+}
+
+.issue-card-top-section {
+  margin: 10px;
+}
+
+.issue-card-content {
+  margin-bottom: 10px;
 }
