@@ -8,4 +8,4 @@
 - Spin up the development server with `yarn start`
 
 ### Deployment
-- TODO
+- run `npm run build` followed by `gcloud app deploy`. the file `app.yaml` tells app engine what to do from there.
